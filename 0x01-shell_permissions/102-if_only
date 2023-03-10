@@ -1,4 +1,2 @@
 #!/bin/bash
-
-[ $(stat -c '%U' hello) == "guillaume" ] && chown betty hellochown --from=guillaume betty hello
-
+chown --from=guillaume betty hello
