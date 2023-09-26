@@ -1,67 +1,24 @@
-# Web server
+### Web Server
 
-In this project, I learned how web servers work and began using one. I was
-provided a personal server by ALX. I learned how to use `scp`
-and Fabric to transfer files to my server. Additionally, I completed a basic
-configuration of the server using Nginx.
+##### How the web works
+Computers connected to the web are called clients and servers. A simplified diagram of how they interact might look like this:
 
-The server is accessible at [bdbnb.site](http://bdbnb.site).
+Clients are the typical web user's internet-connected devices (for example, your computer connected to your Wi-Fi, or your phone connected to your mobile network) and web-accessing software available on those devices (usually a web browser like Firefox or Chrome).
+Servers are computers that store webpages, sites, or apps. When a client device wants to access a webpage, a copy of the webpage is downloaded from the server onto the client machine to be displayed in the user's web browser.
 
-## Tasks :page_with_curl:
+In addition to the client and the server, we also need to say hello to:
 
-* **0. Transfer a file to your server**
-  * [0-transfer_file](./0-transfer_file): Bash script that transfers a file
-  from Holberton's client to a server.
-  * Accepts four arguments:
-    * The path of the file to be transferred.
-    * The IP of the server to transfer the file to.
-    * The username that `scp` connects with.
-    * The path of the SSH privtae key that `scp` uses.
-  * `scp` transfers the file to the user home directory `~/`.
+Your internet connection: Allows you to send and receive data on the web. It's basically like the street between your house and the shop.
+TCP/IP: Transmission Control Protocol and Internet Protocol are communication protocols that define how data should travel across the internet. This is like the transport mechanisms that let you place an order, go to the shop, and buy your goods. In our example, this is like a car or a bike (or however else you might get around).
+DNS: Domain Name System is like an address book for websites. When you type a web address in your browser, the browser looks at the DNS to find the website's IP address before it can retrieve the website. The browser needs to find out which server the website lives on, so it can send HTTP messages to the right place (see below). This is like looking up the address of the shop so you can access it.
+HTTP: Hypertext Transfer Protocol is an application protocol that defines a language for clients and servers to speak to each other. This is like the language you use to order your goods.
+Component files: A website is made up of many different files, which are like the different parts of the goods you buy from the shop. These files come in two main types:
+Code files: Websites are built primarily from HTML, CSS, and JavaScript, though you'll meet other technologies a bit later.
+Assets: This is a collective name for all the other stuff that makes up a website, such as images, music, video, Word documents, and PDFs.
 
-* **1. Install nginx web server**
-  * [1-install_nginx_web_server](./1-install_nginx_web_server): Bash script
-  that configures a new Ubuntu machine with Nginx.
-  * Nginx listens on port 80.
-  * When querying Nginx at its root `/` with a `curl` GET request,
-  it returns a page containing the string `Hello World`.
+When you type a web address into your browser (for our analogy that's like walking to the shop):
 
-* **2. Setup a domain name**
-  * [2-setup_a_domain_name](./2-setup_a_domain_name): A text file containing
-  the domain name set up for the server through Gandi.
-
-* **3. Redirection**
-  * [3-redirection](./3-redirection): Bash script that configures a new Ubuntu
-  machine with Nginx.
-  * Setup is identical to [1-install_nginx_web_server](./1-install_nginx_web_server)
-  plus:
-    * The location `/redirect_me` returns a `301 Moved Permanently` redirection
-    to another page.
-
-* **4. Not found page 404**
-  * [4-not_found_page_404](./4-not_found_page_404): Bash script that configures
-  a new Ubuntu machine with Nginx.
-  * Setup is identical to [1-install_nginx_web_server](./1-install_nginx_web_server)
-  plus:
-    * Features a custom 404 page containing the string `Ceci n'est pas une page`.
-
-* **5. Design a beautiful 404 page**
-  * A custom-designed 404 error page for my server, accessible at
-  [bdbnb.site/404](http://bdbnb.site/404).
-
-* **6. Deploy fast, deploy well**
-  * [fabfile.py](./fabfile.py): A Python Fabric configuration file defining
-  the following functions:
-  * `pack`
-    * Usage: `fabric pack`
-    * Creates a tar gzipped archive of the current directory named
-    `holbertonwebapp.tar.gz` in the local directory.
-  * `deploy`
-    * Usage: `fabric -H <remote server IP> deploy`
-    * Uploads the archive `holbertonwebapp.tar.gz` to the `/tmp`
-    directory of the remote server.
-    * Creates the directory `/tmp/holbertonwebapp` in the remote server.
-    * Untars `holbertonwebapp.tar.gz` in the `/tmp/holbertonwebapp` directory
-    of the remote server.
-  * `clean`
-    * Deletes the archive `holbertonwebapp.tar.gz` in the local directory.
+The browser goes to the DNS server, and finds the real address of the server that the website lives on (you find the address of the shop).
+The browser sends an HTTP request message to the server, asking it to send a copy of the website to the client (you go to the shop and order your goods). This message, and all other data sent between the client and the server, is sent across your internet connection using TCP/IP.
+If the server approves the client's request, the server sends the client a "200 OK" message, which means "Of course you can look at that website! Here it is", and then starts sending the website's files to the browser as a series of small chunks called data packets (the shop gives you your goods, and you bring them back to your house).
+The browser assembles the small chunks into a complete web page and displays it to you (the goods arrive at your door — new shiny stuff, awesome!).
