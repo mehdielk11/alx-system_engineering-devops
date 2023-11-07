@@ -1,28 +1,40 @@
-#!/usr/bin/python3
-"""Module for task 2"""
+import requests
 
+def recurse(subreddit, hot_list=None, count=0, after=None):
+    if hot_list is None:
+        hot_list = []
 
-def recurse(subreddit, hot_list=[], count=0, after=None):
-    """Queries the Reddit API and returns all hot posts
-    of the subreddit"""
-    import requests
+    headers = {"User-Agent": "Your-User-Agent"}
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json"
-                            .format(subreddit),
-                            params={"count": count, "after": after},
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 400:
+    # Construct the URL with parameters
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    params = {"count": count, "after": after}
+
+    try:
+        response = requests.get(url, params=params, headers=headers, allow_redirects=False)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        data = response.json()
+        hot_list += [child["data"]["title"] for child in data["data"]["children"]]
+
+        if not data["data"]["after"]:
+            return hot_list
+
+        return recurse(subreddit, hot_list, data["data"]["count"], data["data"]["after"])
+
+    except requests.exceptions.RequestException as e:
+        print(f"RequestException: {e}")
+        return None
+    except KeyError as e:
+        print(f"KeyError: {e}")
         return None
 
-    hot_l = hot_list + [child.get("data").get("title")
-                        for child in sub_info.json()
-                        .get("data")
-                        .get("children")]
+if __name__ == "__main__":
+    subreddit = "your_subreddit_name"
+    hot_posts = recurse(subreddit)
+    if hot_posts:
+        for i, post in enumerate(hot_posts, 1):
+            print(f"{i}. {post}")
+    else:
+        print("Failed to fetch hot posts.")
 
-    info = sub_info.json()
-    if not info.get("data").get("after"):
-        return hot_l
-
-    return recurse(subreddit, hot_l, info.get("data").get("count"),
-                   info.get("data").get("after"))
